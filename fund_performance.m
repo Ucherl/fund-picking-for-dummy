@@ -20,6 +20,8 @@ end
 
 [k,~]=size(for_regression);
 
+
+
 new_for_regression=[];
 for g=1:k-1
     new_for_regression=[new_for_regression; (for_regression(g+1,2)-for_regression(g,2))/for_regression(g,2), (for_regression(g+1,3)-for_regression(g,3))/for_regression(g,3),for_regression(g+1,4)];
@@ -28,7 +30,7 @@ end
 
 
 %just for checking
-%disp(for_regression_metrix);
+%disp(new_for_regression);
 y=new_for_regression(:,1)-new_for_regression(:,3);
 %disp(y);
 x=new_for_regression(:,2)-new_for_regression(:,3);
@@ -50,5 +52,4 @@ else
 end
 %disp(alpha);
 %disp(beta);
-end
 

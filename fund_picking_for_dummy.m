@@ -9,11 +9,11 @@ disp('make sure the matrix you input conform with d1,market,d2,risk_free,di,fund
 AB_table=[];
 for i=1:(m-4)/2
     [alpha,beta]=fund_performance(input(:,1),input(:,2),input(:,2*i+3),input(:,2*i+4),input(:,3),input(:,4),1);
-    
-    AB_table=[AB_table;alpha,beta];    
+    [gama] = beta_strategy(input(:,1),input(:,2),input(:,2*i+3),input(:,2*i+4),input(:,3),input(:,4),1);
+    AB_table=[AB_table;alpha,beta,gama];    
 end
 
-disp('....alpha......beta')
+disp('....alpha......beta......gama')
 disp(AB_table)
 
 end
