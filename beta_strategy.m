@@ -1,4 +1,4 @@
-function [gama] = beta_strategy(d1,market,d2,fund,d3,risk_free,draw)
+function [gama,pValue] = beta_strategy(d1,market,d2,fund,d3,risk_free,draw)
 % dummy variable D
 % IF Rm-Rf>0 ,D=1
 % IF Rm-Rf<0 ,D=0
@@ -8,12 +8,15 @@ function [gama] = beta_strategy(d1,market,d2,fund,d3,risk_free,draw)
 
 [m,~]=size(d2);
 [n,~]=size(d1);
+[r,~]=size(d3);
 for_regression=[];
 
 for i=1:m
     for j=1:n
-        if (d2(i,1)==d1(j,1)) && isnan(fund(i,1))==0 && d2(i,1)==d3(j,1)
-            for_regression= [for_regression ; d2(i,1),fund(i,1),market(j,1),risk_free(j,1)];
+        for u=1:r
+            if  (d2(i,1)==d1(j,1)) && isnan(fund(i,1))==0 && d2(i,1)==d3(u,1)
+                for_regression= [for_regression ; d2(i,1),fund(i,1),market(j,1),risk_free(u,1)];
+            end
         end
     end
 end
@@ -43,26 +46,30 @@ end
 
 
 %use \ to get coefficient
-A=[ones(k-1,1),x,x.*dummy_D];
-abg=A\y;
-
-%disp(abg);
+A=[x,x.*dummy_D];
+%abg=A\y;
 
 
-if draw==1
+[abg,~,STATS]=glmfit(A,y);
+%disp(abg)
+%disp(STATS.p);
+%USE GLMFIT TO OUTPUT GAMA AND P VALUE
+
+    if draw==1
     figure;
     plot(x,y,'*')
     hold on
     fplot(@(tr)abg(1)+(abg(2)+abg(3))*tr,[0 max(x)])
     fplot(@(tr)abg(1)+abg(2)*tr,[min(x) 0])
     %plot(x,abg(1)+(abg(2)+abg(3))*x,'-',x,abg(1)+abg(2)*x,'-');
-else
-    return
-end
-
+    
+    end
 
 gama=abg(3);
+pValue=STATS.p(3);
+    
 end
+
 
 
 

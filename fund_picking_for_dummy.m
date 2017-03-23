@@ -3,18 +3,20 @@ function [output] = fund_picking_for_dummy( input)
 %step2 catagorize input with market,risk_free,fund
 %step3 use fund_performance to output alpha & beta
 %step4 arrange output from step3
-disp('make sure the matrix you input conform with d1,market,d2,risk_free,di,funds');
+disp('make sure the matrix you input conform with d1,market,d2,risk_free,di,funds_currency,funds_NAV');
 
 [~,m]=size(input);
+input=flipud(input);
 AB_table=[];
-for i=1:(m-4)/2
-    [alpha,beta]=fund_performance(input(:,1),input(:,2),input(:,2*i+3),input(:,2*i+4),input(:,3),input(:,4),1);
-    [gama] = beta_strategy(input(:,1),input(:,2),input(:,2*i+3),input(:,2*i+4),input(:,3),input(:,4),1);
-    AB_table=[AB_table;alpha,beta,gama];    
+for i=1:(m-5)/2
+    [alpha,beta,a_Pvalue,b_Pvalue]=fund_performance(input(:,1),input(:,2),input(:,5),input(:,2*i+5),input(:,3),input(:,4),0);
+    [gama,g_Pvalue] = beta_strategy(input(:,1),input(:,2),input(:,5),input(:,2*i+5),input(:,3),input(:,4),1);
+    AB_table=[AB_table;i,alpha,a_Pvalue,beta,b_Pvalue,gama,g_Pvalue];    
 end
 
-disp('....alpha......beta......gama')
+%disp('....alpha......beta......gama')
 disp(AB_table)
 
+output=AB_table;
 end
 
