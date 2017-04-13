@@ -10,7 +10,7 @@ input=flipud(input);
 AB_table=[];
 for i=1:(m-5)/2
     [alpha,beta,a_Pvalue,b_Pvalue]=fund_performance(input(:,1),input(:,2),input(:,5),input(:,2*i+5),input(:,3),input(:,4),0);
-    [gama,g_Pvalue] = beta_strategy(input(:,1),input(:,2),input(:,5),input(:,2*i+5),input(:,3),input(:,4),1);
+    [gama,g_Pvalue] = beta_strategy(input(:,1),input(:,2),input(:,5),input(:,2*i+5),input(:,3),input(:,4),0);
     AB_table=[AB_table;i,alpha,a_Pvalue,beta,b_Pvalue,gama,g_Pvalue];    
 end
 

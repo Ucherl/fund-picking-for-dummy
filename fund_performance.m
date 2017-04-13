@@ -14,20 +14,22 @@ for_regression=[];
 for i=1:m
     for j=1:n
         for u=1:r
-            if  (d2(i,1)==d1(j,1)) && isnan(fund(i,1))==0 && d2(i,1)==d3(u,1)
+            if  d2(i,1)==d1(j,1) && d2(i,1)==d3(u,1)
                 for_regression= [for_regression ; d2(i,1),fund(i,1),market(j,1),risk_free(u,1)];
             end
         end
     end
 end
-
+% && isnan(fund(i,1))==0
 [k,~]=size(for_regression);
 
 %disp(k);check how many input data
 
 new_for_regression=[];
 for g=1:k-1
-    new_for_regression=[new_for_regression; (for_regression(g+1,2)-for_regression(g,2))/for_regression(g,2), (for_regression(g+1,3)-for_regression(g,3))/for_regression(g,3),for_regression(g+1,4)];
+    if isnan( for_regression(g,2) )==0 && isnan( for_regression(g,3) )==0 && isnan( for_regression(g,4) )==0
+    new_for_regression=[new_for_regression; (for_regression(g+1,2)-for_regression(g,2))/for_regression(g,2), (for_regression(g+1,3)-for_regression(g,3))/for_regression(g,3),for_regression(g,4)];
+    end
 end
 
 
